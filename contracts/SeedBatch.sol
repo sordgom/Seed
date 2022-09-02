@@ -6,9 +6,25 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 
 contract SeedBatch is ERC1155, Ownable, ERC1155Supply {
+    
     mapping (uint256 => string) private _tokenURIs;
+    string private _eventName;
+    string private _symbol;
 
-    constructor() ERC1155("https://seedBatch.com/") {}
+    constructor(string memory eventName, string memory symbol, string memory uri) ERC1155("https://seedBatch.com/{id}.json") {
+        _eventName = eventName;
+        _symbol = symbol;
+        setTokenUri(tokenId, uri);
+        setURI(uri);
+    }
+
+    function eventName() external view returns (string memory) {
+        return _eventName;
+    }
+
+    function symbol() external view returns (string memory) {
+        return _symbol;
+    }
 
     function setURI(string memory newuri) public onlyOwner {
         _setURI(newuri);
